@@ -1,0 +1,54 @@
+header:
+  version: 11
+
+distro: mmp-poky
+
+defaults:
+  repos:
+    refspec: master
+
+repos:
+  mender-multiplatform:
+
+  poky:
+    url: https://git.yoctoproject.org/git/poky
+    refspec: dunfell
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+
+  meta-openembedded:
+    url: https://git.openembedded.org/meta-openembedded
+    refspec: dunfell
+    layers:
+      meta-oe:
+
+  meta-mender:
+    url: https://github.com/mendersoftware/meta-mender.git
+    refspec: master
+    layers:
+      meta-mender-core:
+      meta-mender-demo:
+      meta-mender-raspberrypi:
+
+  meta-mender-community:
+    url: https://github.com/mendersoftware/meta-mender-community.git
+    refspec: dunfell
+    layers:
+      meta-mender-beaglebone:
+
+  meta-raspberrypi:
+    url: https://github.com/agherzan/meta-raspberrypi.git
+    refspec: dunfell
+
+local_conf_header:
+  base: |
+    CONF_VERSION = "1"
+    PACKAGE_CLASSES = "package_ipk"
+    MENDER_ARTIFACT_NAME = "release-1"
+
+machine: unset
+
+target:
+  - core-image-minimal

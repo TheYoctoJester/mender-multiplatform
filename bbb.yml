@@ -1,0 +1,6 @@
+header:
+  version: 11
+  includes:
+  - base.yml
+
+machine: mmp-beaglebone-yocto
