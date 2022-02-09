@@ -82,18 +82,68 @@ In many cases additions or modifications that affect the whole build for a speci
 
 ## Usage
 
-For ease of use, the repository comes with `kas` configuration files. In order to build, you need a host that is capable of running a Yocto build as described [here](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html), and additionally have `kas` installed, for example via
+***Note:***
 
-	sudo pip3 install kas
+**This repository is specifically showing a single build directory for multiple machines. Other use cases might need different setup strategies**
+
+In order to build, you need a host that is capable of running a Yocto build as described [here](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html).
 
 Alternatively, you can use a prepared docker container like [theyoctojester/devcontainer-local-yoep](https://hub.docker.com/r/theyoctojester/devcontainer-local-yoep).
 
-Example for the beaglebone target:
+### Setup with `kas`
 
-	kas build bbb.yml
+For ease of use, the repository comes with `kas` configuration files. In order to use it, you need to have the `kas` utility installed, for example via
+
+	sudo pip3 install kas
+
+All you need to do is set up the build, and load the environment into the shell.
+
+	kas checkout kas.yml
+	source poky/oe-init-build-env
+
+This creates the build setup, and intentionally sets the `MACHINE` variable to an invalid value to prevent accidentially building for an implicitly selected target.
+
+### Manual setup
+
+You need to clone the following repositories, with the given branches:
+
+| URL | Branch |
+| :-- | :----- |
+| https://git.yoctoproject.org/git/poky | dunfell |
+| https://git.openembedded.org/meta-openembedded | dunfell |
+| https://github.com/mendersoftware/meta-mender.git | master |
+| https://github.com/mendersoftware/meta-mender-community.git | dunfell |
+| https://github.com/agherzan/meta-raspberrypi.git | dunfell |
+
+On the example of `poky`, the clone procedure works like this:
+
+	git clone https://git.yoctoproject.org/git/poky
+	cd poky # the name of the repository
+	git checkout dunfell	# the branch name
+	cd ..
+
+Repeat this for all listed repositories. The `master` branch does not need to be checked out specifically.
+
+Once you have obtained all necessary metadata repositories, you can set up the build directory and add the specific layers. The following commands asumme that you did all `git clone`s inside the top level directory of this repository. Otherwise, you might need to adjust the pathes accordingly.
+
+	source poky/oe-init-build-env
+	bitbake-layers add-layer ../meta-openembedded/meta-oe
+	bitbake-layers add-layer ../meta-raspberrypi
+	bitbake-layers add-layer ../meta-mender/meta-mender-core
+	bitbake-layers add-layer ../meta-mender/meta-mender-demo
+	bitbake-layers add-layer ../meta-mender/meta-mender-raspberrypi
+	bitbake-layers add-layer ../meta-mender-community/meta-mender-beaglebone
+
+You might want to revisit the default generated settings in `conf/local.conf`, although the automatically generated state should usually work.
+
+### Building
+
+Now you are ready to build  in the same context for all supported targets in any desired combination and order, there should be no conflicts.
+
+	MACHINE=mmp-beaglebone-yocto bitbake core-image-minimal
+	MACHINE=mmp-raspberrypi3 bitbake core-image-minimal
+	MACHINE=mmp-raspberrypi4 bitbake core-image-minimal
 
 In order to leverage caches for downloads and build artifacts, you can pass them in via environment variables like
 
-	DL_DIR=/path/to/downloads SSTATE_DIR=/path/to/sstate kas build bbb.yml
-
-You can issue the commmand in the same context for all supported targets in any desired combination and order, there should be no conflicts.
+	DL_DIR=/path/to/downloads SSTATE_DIR=/path/to/sstate MACHINE=mmp-raspberrypi4 bitbake core-image-minimal
