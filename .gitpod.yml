@@ -1,1 +1,1 @@
-image: theyoctojester/yocto-devcontainer:latest
+image: theyoctojester/devcontainer-gitpod-yoep:latest
