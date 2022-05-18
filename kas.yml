@@ -12,7 +12,7 @@ repos:
 
   poky:
     url: https://git.yoctoproject.org/git/poky
-    refspec: dunfell
+    refspec: kirkstone
     layers:
       meta:
       meta-poky:
@@ -20,31 +20,31 @@ repos:
 
   meta-openembedded:
     url: https://git.openembedded.org/meta-openembedded
-    refspec: dunfell
+    refspec: kirkstone
     layers:
       meta-oe:
 
   meta-mender:
-    url: https://github.com/mendersoftware/meta-mender.git
-    refspec: master
+    url: https://github.com/theyoctojester/meta-mender.git
+    refspec: master-next
     layers:
       meta-mender-core:
       meta-mender-demo:
       meta-mender-raspberrypi:
 
   meta-mender-community:
-    url: https://github.com/mendersoftware/meta-mender-community.git
-    refspec: dunfell
+    url: https://github.com/theyoctojester/meta-mender-community.git
+    refspec: kirkstone-next
     layers:
       meta-mender-beaglebone:
 
   meta-raspberrypi:
     url: https://github.com/agherzan/meta-raspberrypi.git
-    refspec: dunfell
+    refspec: kirkstone
 
 local_conf_header:
   base: |
-    CONF_VERSION = "1"
+    CONF_VERSION = "2"
     PACKAGE_CLASSES = "package_ipk"
     MENDER_ARTIFACT_NAME = "release-1"
 
