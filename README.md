@@ -14,8 +14,8 @@ In this repository this will be:
   - distribution: poky (the canned Yocto Project reference distribution)
   - BSPs:
     * Beaglebone Black
-	* Raspberry Pi 3
-	* Raspberry Pi 4
+    * Raspberry Pi 3
+    * Raspberry Pi 4
 
 While the concrete implementation is quite specific to the component-hardware combination - just like a product usually is - the general concepts can be seen in context here and applied to other setups.
 
@@ -52,8 +52,9 @@ The distribution is essentially defining the API that your product intends to us
 	require conf/distro/poky.conf
 
 	INHERIT += "mender-full"
+	INIT_MANAGER = "systemd"
 
-This means, we want an almost unmodified `poky` distribution, just with the `mender-full` integration added across all machines/builds.
+This means, we want an almost unmodified `poky` distribution, just with `systemd` as init manager and the `mender-full` integration added across all machines/builds.
 
 See also [mmp-poky](conf/distro/mmp-poky.conf)
 
@@ -109,11 +110,11 @@ You need to clone the following repositories, with the given branches:
 
 | URL | Branch |
 | :-- | :----- |
-| https://git.yoctoproject.org/git/poky | dunfell |
-| https://git.openembedded.org/meta-openembedded | dunfell |
-| https://github.com/mendersoftware/meta-mender.git | master |
-| https://github.com/mendersoftware/meta-mender-community.git | dunfell |
-| https://github.com/agherzan/meta-raspberrypi.git | dunfell |
+| https://git.yoctoproject.org/git/poky | scarthgap |
+| https://git.openembedded.org/meta-openembedded | scarthgap |
+| https://github.com/mendersoftware/meta-mender.git | scarthgap |
+| https://github.com/mendersoftware/meta-mender-community.git | scarthgap |
+| https://github.com/agherzan/meta-raspberrypi.git | scarthgap |
 
 On the example of `poky`, the clone procedure works like this:
 
@@ -124,7 +125,7 @@ On the example of `poky`, the clone procedure works like this:
 
 Repeat this for all listed repositories. The `master` branch does not need to be checked out specifically.
 
-Once you have obtained all necessary metadata repositories, you can set up the build directory and add the specific layers. The following commands asumme that you did all `git clone`s inside the top level directory of this repository. Otherwise, you might need to adjust the pathes accordingly.
+Once you have obtained all necessary metadata repositories, you can set up the build directory and add the specific layers. The following commands assume that you did all `git clone`s inside the top level directory of this repository. Otherwise, you might need to adjust the pathes accordingly.
 
 	source poky/oe-init-build-env
 	bitbake-layers add-layer ../meta-openembedded/meta-oe

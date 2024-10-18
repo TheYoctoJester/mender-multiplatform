@@ -1,18 +1,17 @@
 header:
-  version: 11
+  version: 14
 
 distro: mmp-poky
 
 defaults:
   repos:
-    refspec: master
+    branch: scarthgap
 
 repos:
   mender-multiplatform:
 
   poky:
     url: https://git.yoctoproject.org/git/poky
-    refspec: kirkstone
     layers:
       meta:
       meta-poky:
@@ -20,27 +19,27 @@ repos:
 
   meta-openembedded:
     url: https://git.openembedded.org/meta-openembedded
-    refspec: kirkstone
     layers:
       meta-oe:
 
   meta-mender:
-    url: https://github.com/theyoctojester/meta-mender.git
-    refspec: master-next
+    url: https://github.com/mendersoftware/meta-mender.git
     layers:
       meta-mender-core:
       meta-mender-demo:
-      meta-mender-raspberrypi:
+
+  meta-lts-mixins:
+    url: https://git.yoctoproject.org/meta-lts-mixins
+    branch: scarthgap/u-boot
 
   meta-mender-community:
-    url: https://github.com/theyoctojester/meta-mender-community.git
-    refspec: kirkstone-next
+    url: https://github.com/mendersoftware/meta-mender-community.git
     layers:
       meta-mender-beaglebone:
+      meta-mender-raspberrypi:
 
   meta-raspberrypi:
     url: https://github.com/agherzan/meta-raspberrypi.git
-    refspec: kirkstone
 
 local_conf_header:
   base: |
